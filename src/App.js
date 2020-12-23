@@ -1,23 +1,43 @@
-import logo from './logo.svg';
+import React, { useEffect, useState, Suspense } from 'react';
+
 import './App.css';
+import Layout from './components/Layout';
+
+const Grid = React.lazy(() => import('./components/Grid'));
+
 
 function App() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch('https://stradiv.herokuapp.com/productos')
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Layout>
+        <div id="slideshow">
+          <h3>Colección Fiesta </h3>
+          <div className="animation">
+          <h2>-</h2>
+          <h2 className="animatedNumber"></h2>
+          <h2>0%</h2>
+          </div>
+        </div>
+        <main>
+          <div className="container">
+            <h3 className="text-center">Our Colection</h3>
+            <div className="container container2">
+            {products ? products.map((product) => <Suspense fallback={<div>Loading...</div>}><Grid 
+            title={product.titulo} 
+            key={product.id} 
+            img={product.imagen[0].name}/></Suspense>) : null}
+            </div>
+          </div>
+        </main>
+      </Layout>
     </div>
   );
 }
