@@ -10,7 +10,7 @@ function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch('https://stradiv.herokuapp.com/productos')
+    fetch('https://api.unsplash.com/photos/?client_id=g7O22G75kwIccKNkHbDjpqsRtEzt2Yy9tUN5q2y15ZI')
       .then((res) => res.json())
       .then((data) => setProducts(data))
   }, []);
@@ -31,9 +31,9 @@ function App() {
             <h3 className="text-center">Our Colection</h3>
             <div className="container container2">
             {products ? products.map((product) => <Suspense fallback={<div>Loading...</div>}><Grid 
-            title={product.titulo} 
-            key={product.id} 
-            img={product.imagen[0].name}/></Suspense>) : null}
+            title={product.user.name} 
+            key={product.user.id} 
+            img={product.urls.full}/></Suspense>) : null}
             </div>
           </div>
         </main>
